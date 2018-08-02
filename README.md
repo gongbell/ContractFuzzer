@@ -76,7 +76,7 @@ And finally you could see results records file in directory '/YourTested_contrac
 
 ## Paper
 
-The accompanying paper explaining the fuzzer can be found [here](http://www.buaa.edu.cn/gongbell/contractfuzzer.pdf).
+The accompanying paper explaining the fuzzer can be found [here](https://github.com/gongbell/ContractFuzzer/blob/master/ASE18-ContractFuzzer.pdf).
 
 
 ## Utilities
@@ -87,12 +87,20 @@ A collection of the utilities that were developed for the paper are in `tools`. 
 2. `get_function_signature_from_abi.py` - Contains a number of functions to get signature pair from contracts' bin.
 3. `download_verified_contract_from_etherscan`  Contains a number of functions to retrieve verified contract source(`abi,bin,constructor param`) from [EtherScan](https://etherscan.io)
 
+## Code Structure Descriptions
+
+Some details about the repository structure as following.
+
+1. `Ethereum` is the base private chain that we deployed the public contracts and  our agent contracts. Do not to crash it. And please deploy your contract upon it;
+2. `contract_deployer` is the tool to deploy contract easily for us.
+3. `contract_fuzzer` is one part of ContractFuzzer, which generates contract call messages based on contract's ABI definition;
+4.  `contract_tester` is one part of ContractFuzzer, which sends the contract call messages to our instrumented Geth client.
+5.  `go-ethereum-cf` is one part of ContractFuzzer, which instrumented the evm of Go-etheruem. And most codes added could be found under relative directory `core/vm`
+6.  `examples` here provides some cases for us to make sense of the tool quickly.
 
 ## Contributing
 
-Checkout out our [contribution guide](https://github.com/gongbell/ContractFuzzer/blob/master/CONTRIBUTING.md) and the code structure [here](https://github.com/gongbell/ContractFuzzer/blob/master/code.md).
+Checkout out our [contribution guide](https://github.com/gongbell/ContractFuzzer/blob/master/CONTRIBUTING.md) 
 
 
-=======
-The Ethereum Smart Contract Fuzzer for Security Vulnerability Detection
->>>>>>> 3f475be0c734410c4d20a3c7d126726d897f1f74
+
