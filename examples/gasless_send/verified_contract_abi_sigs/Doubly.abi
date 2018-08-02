@@ -1,0 +1,8 @@
+0x13af4035:setOwner(address)
+0x2df05a3e:payoutIndex()
+0x35c1d349:participants(uint256)
+0x57831809:payoutCount()
+0x8da5cb5b:owner()
+0x9af1d35a:fees()
+0xc8796572:collectFees()
+0xe97dcb62:enter()

@@ -1,0 +1,8 @@
+0x1998aeef:bid()
+0x2a24f46c:auctionEnd()
+0x38af3eed:beneficiary()
+0x3ccfd60b:withdraw()
+0x4f245ef7:auctionStart()
+0x91f90157:highestBidder()
+0xd074a38d:biddingTime()
+0xd57bde79:highestBid()

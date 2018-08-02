@@ -1,0 +1,1 @@
+[{"constant":false,"inputs":[{"name":"rewardsDistribution","type":"uint32[]"},{"name":"winners","type":"address[]"}],"name":"reward","outputs":[],"payable":true,"type":"function"}]

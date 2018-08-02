@@ -1,0 +1,1 @@
+[{"constant":false,"inputs":[],"name":"payout","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"deposit","outputs":[],"payable":true,"type":"function"},{"inputs":[{"name":"_owners","type":"address[]"}],"type":"constructor"}]

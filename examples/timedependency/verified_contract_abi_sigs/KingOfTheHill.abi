@@ -1,0 +1,7 @@
+0x29b0ffea:numberOfPreviousEntries()
+0x7d94792a:seed()
+0x8da5cb5b:owner()
+0x97e1754c:previousEntries(uint256)
+0xc08d1fe5:timeLimit()
+0xf238683f:lastKing()
+0xf5b45714:currentKing()
