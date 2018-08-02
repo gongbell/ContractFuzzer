@@ -1,0 +1,45 @@
+{
+	"name": "soliditytest",
+	"version": "0.0.1",
+	"author": "刘晔",
+	"description": "第一个node.js程序",
+	"keywords": [
+		"node.js",
+		"javascript"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://path/to/url"
+	},
+	"license": "MIT",
+	"contributors": [
+		{
+			"name": "刘晔",
+			"email": "liuye5@live.com"
+		}
+	],
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"web3": "^0.20.1",
+		"babel-core": "^6.22.1",
+		"babel-preset-es2015": "^6.22.0",
+		"babel-preset-stage-2": "^6.18.0",
+		"babel-preset-stage-3": "^6.17.0",
+		"babel-preset-es2017": "^6.22.0",
+		"dotenv": "^4.0.0",
+		"babel-preset-power-assert": "^1.0.0",
+		"truffle-contract": "^2.0.0",
+		"solc": "^0.4.10",
+		"truffle-compile": "^1.1.2",
+		"solidity-test-util": "^1.0.0",
+		"truffle": "^2.1.1",
+		"unix-timestamp": "^0.2.0",
+		"npmlog": "^4.1.0",
+		"mysql": "^2.15.0",
+		"https": "^1.0.0",
+		"url": "^0.11.0"
+	}
+}

@@ -1,0 +1,19 @@
+{
+    "from": "none",
+    "value": "1000000000",
+    "gas": "50000000",
+    "home": "/home/liuye/PycharmProjects/DownloadContracts",
+    "contracts": [{
+        "home": "/home/liuye/PycharmProjects/DownloadContracts",
+        "childhome": "/DefinedCaller",
+        "name": "MyCaller",
+        "param_Types": "none",
+        "param_Names": "none",
+        "param_Values": "none",
+        "from": "0x2b71cc952c8e3dfe97a696cf5c5b29f8a07de3d8",
+        "value": "1000000000",
+        "gas": "1000000",
+        "payable": false,
+        "deployed": 1
+    }]
+}
