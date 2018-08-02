@@ -1,0 +1,20 @@
+//gethrun script .
+//function : 1、detect whether there exists one transaction has been submitted 
+//           2、auto mine to enable the transaction in BlockChain
+var primary = eth.accounts[0];
+personal.unlockAccount(primary,"123456",100*60*60);
+miner.setEtherbase(primary);
+var INTEVAL = 60;//60sec on my private chain;	while(true)
+while(true){
+   var status = txpool.status;
+   //console.log("pending:"+status.pending);
+   //console.log("queued:"+status.queued);
+   if(status.pending!=0||status.queued!=0){
+				console.log("mine......");
+				miner.start();
+				admin.sleepBlocks(3);
+				miner.stop();
+				console.log("mined!");
+			}
+   admin.sleep(INTEVAL/10);
+}
