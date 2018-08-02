@@ -1,0 +1,1 @@
+cmd_Release/obj.target/registry.node := g++ -shared -pthread -rdynamic -m64  -Wl,-soname=registry.node -o Release/obj.target/registry.node -Wl,--start-group Release/obj.target/registry/registry.o -Wl,--end-group 

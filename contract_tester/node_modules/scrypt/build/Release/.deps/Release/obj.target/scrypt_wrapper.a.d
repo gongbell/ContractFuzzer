@@ -1,0 +1,1 @@
+cmd_Release/obj.target/scrypt_wrapper.a := rm -f Release/obj.target/scrypt_wrapper.a && ar crs Release/obj.target/scrypt_wrapper.a Release/obj.target/scrypt_wrapper/src/util/memlimit.o Release/obj.target/scrypt_wrapper/src/scryptwrapper/keyderivation.o Release/obj.target/scrypt_wrapper/src/scryptwrapper/pickparams.o Release/obj.target/scrypt_wrapper/src/scryptwrapper/hash.o
