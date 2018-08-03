@@ -10,7 +10,8 @@ A container with the dependencies set up can be found [here](https://pan.baidu.c
 
 To open the container, install docker and run:
 ```
-docker pull ly/ContractFuzzer && docker run -i -t ly/ContractFuzzer
+docker load<contractfuzzer.tar 
+docker run -i -t contractfuzzer/contractfuzzer:latest
 ```
 
 To evaluate the example contracts inside the container, run:
