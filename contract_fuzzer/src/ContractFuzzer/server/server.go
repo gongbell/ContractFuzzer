@@ -28,9 +28,10 @@ var(
 	timedependency_writer *os.File
 	numberdependency_writer *os.File
 	freezingether_writer *os.File
+	addr_map_file string 
 )
 func init_file_rw(addr_map string, reporter string){
-	addr_map_file := addr_map
+	addr_map_file = addr_map
 	logfile := reporter+"/log.txt"
 	countfile := reporter+"/count.txt"
 	contract_output_file := reporter+"/contract_fun_vulnerabilities.txt"
