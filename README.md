@@ -6,7 +6,7 @@ released under GPL v3 license.
 
 ## Quick Start
 
-A container with the dependencies set up can be found [here](https://hub.docker.com/r/ly/ContractFuzzer/).
+A container with the dependencies set up can be found [here](https://pan.baidu.com/s/1eGRuhucIBNTanw-5Vm8--g).password:bei3
 
 To open the container, install docker and run:
 ```
@@ -97,6 +97,7 @@ Some details about the repository structure as following.
 4.  `contract_tester` is one part of ContractFuzzer, which sends the contract call messages to our instrumented Geth client.
 5.  `go-ethereum-cf` is one part of ContractFuzzer, which instrumented the evm of Go-etheruem. And most codes added could be found under relative directory `core/vm`
 6.  `examples` here provides some cases for us to make sense of the tool quickly.
+7.  `base` here provides some fundamental dockerfiles. `golang, nodejs and their integreted enviroment.`
 
 ## Contributing
 
