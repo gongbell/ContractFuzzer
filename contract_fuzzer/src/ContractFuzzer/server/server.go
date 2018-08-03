@@ -30,17 +30,17 @@ var(
 	freezingether_writer *os.File
 )
 func init_file_rw(addr_map string, reporter string){
-	addr_map_file = addr_map
-	logfile = reporter+"/log.txt"
-	countfile = reporter+"/count.txt"
-	contract_output_file = reporter+"/contract_fun_vulnerabilities.txt"
-	receive_count_file = reporter+"/receive_count.txt"
+	addr_map_file := addr_map
+	logfile := reporter+"/log.txt"
+	countfile := reporter+"/count.txt"
+	contract_output_file := reporter+"/contract_fun_vulnerabilities.txt"
+	receive_count_file := reporter+"/receive_count.txt"
 	logWriter,_ = os.OpenFile(logfile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
     countWriter,_=os.OpenFile(countfile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
     count_output,_  = os.OpenFile(contract_output_file, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
     receive_count_writer,_ = os.OpenFile(receive_count_file, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	reen_writer,_ = os.OpenFile(reporter+"/bug/reentrancy_danger.list",os.O_CREATE|os.O_APPEND|os.O_RDWR,0666)
-	except_disorder_writer,_ = os.OpenFile(reporter+"bug/exception_disorder.list",os.O_CREATE|os.O_APPEND|os.O_RDWR,0666)
+	except_disorder_writer,_ = os.OpenFile(reporter+"/bug/exception_disorder.list",os.O_CREATE|os.O_APPEND|os.O_RDWR,0666)
 	delegate_writer,_ = os.OpenFile(reporter+"/bug/delegate_danger.list",os.O_CREATE|os.O_APPEND|os.O_RDWR,0666)
 	gasless_writer,_ = os.OpenFile(reporter+"/bug/gasless_send.list",os.O_CREATE|os.O_APPEND|os.O_RDWR,0666)
 	timedependency_writer,_ = os.OpenFile(reporter+"/bug/time_dependency.list",os.O_CREATE|os.O_APPEND|os.O_RDWR,0666)

@@ -35,6 +35,6 @@ func main()  {
 		return
 	}
 	go fuzz.Start(*abi_dir,*out_dir)
-	go server.Start(addr_map,reporter)
+	go server.Start(*addr_map,*reporter)
 	<-fuzz.G_finish
 }

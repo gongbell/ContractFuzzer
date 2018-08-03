@@ -19,7 +19,7 @@ To evaluate the example contracts inside the container, run:
 cd /ContractFuzzer && ./run.sh --contracts_dir ./examples/exception_disorder
 ```
 
-and finally you will see results records file in directory '/ContractFuzzer/examples/exception_dirorder/list/reporter/'!
+and finally you will see results records file in directory  `/ContractFuzzer/examples/exception_dirorder/list/reporter/`!
 
 ## Custom Docker image build
 
