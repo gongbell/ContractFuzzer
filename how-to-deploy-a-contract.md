@@ -60,7 +60,8 @@ cd contract_deployer&&babel-node ./utils/deploy-main.js
 Finally, you could find contract `address` in file 
 `/ContractFuzzer/contract_deployer/examples/config/xxx.json`!
 
-#Notice
+# Notice
+
 The instruction is under change. And this needs efforts to make a success.
 
 What's more, if you could deploy contracts on the private chain(upon base chain we provided `Ethereum` in the repository) in your own way, that's very nice.
