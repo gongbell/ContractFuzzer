@@ -22,7 +22,7 @@ cd /ContractFuzzer && ./run.sh --contracts_dir ./examples/exception_disorder
 
 and finally you will see results records file in directory  `/ContractFuzzer/examples/exception_dirorder/list/reporter/`!
 
-## Custom Docker image build
+## Custom Docker image build(verified under Ubuntu 16.04)
 
 
 ```
