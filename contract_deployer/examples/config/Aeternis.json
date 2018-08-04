@@ -1,8 +1,8 @@
 {
     "contracts": [
         {
-            "home": "/home/liuye/GitLab/contract_deployer",
-            "childhome": "/smart_contracts",
+            "home": "/ContractFuzzer/contract_deployer",
+            "childhome": "/examples",
             "from": "0x2b71cc952c8e3dfe97a696cf5c5b29f8a07de3d8",
             "gas": "50000000000",
             "name": "Aeternis",
@@ -15,18 +15,16 @@
             "param_Values": {
                 "_owner": "0xed161fa9adad3ba4d30c829034c4745ef443e0d9"
             },
-            "payable": false,
-            "value": "1000000000",
             "values": [
                 "0xed161fa9adad3ba4d30c829034c4745ef443e0d9"
             ],
-            "deployed": 1,
-            "address": "0xf0d5761e9c9ccaed9e49080fecbb221840bf2685"
+            "payable": false,
+            "value": "1000000000"
         }
     ],
     "from": "none",
     "gas": "50000000000",
-    "home": "/home/liuye/GitLab/contract_deployer",
+    "home": "/ContractFuzzer/contract_deployer",
     "value": "1000000000",
-    "file_path": "/home/liuye/GitLab/contract_deployer/smart_contracts/config/Aeternis.json"
+    "file_path": "/ContractFuzzer/contract_deployer/examples/config/Aeternis.json"
 }
