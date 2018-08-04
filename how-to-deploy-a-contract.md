@@ -64,4 +64,4 @@ Finally, you could find contract `address` in file
 
 The instruction is under change. And this needs efforts to make a success.
 
-What's more, if you could deploy contracts on the private chain(upon base chain we provided `Ethereum` in the repository) in your own way, that's very nice.
+What's more, if you could deploy contracts on the private chain(upon base chain `Ethereum`  we provided in the repository) in your own way, that's very nice.
