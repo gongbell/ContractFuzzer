@@ -30,7 +30,7 @@ the examples directory structure
 ## Custom Docker image build
 
 ```
-docker build -t contractfuzzer/deployer .
+docker build -f deploy.Dockerfile -t contractfuzzer/deployer .
 docker run -it -e "ContractFuzzer=/contractFuzzer/deployer"  contractfuzzer/deployer:latest
 ```
 ## Deploy Ethereum Contracts
