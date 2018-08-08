@@ -4,6 +4,9 @@ The Ethereum Smart Contract Fuzzer for Security Vulnerability Detection
 
 released under GPL v3 license.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1341421.svg)](https://doi.org/10.5281/zenodo.1341421)
+
+
 Any questions with the tool, please contact Dr. Bo Jiang. gongbell@gmail.com
 
 ## Quick Start
