@@ -82,7 +82,7 @@ And finally you could see results records file in directory '/YourTested_contrac
 
 ## Paper
 
-The accompanying paper explaining the fuzzer can be found [here](https://github.com/gongbell/ContractFuzzer/blob/master/ASE18-ContractFuzzer.pdf).
+The accompanying paper explaining the fuzzer can be found [here](https://github.com/gongbell/ContractFuzzer/blob/master/ASE18-ContractFuzzer.pdf) or [here](http://jiangbo.buaa.edu.cn/ContractFuzzerASE18.pdf).
 
 
 ## Utilities
