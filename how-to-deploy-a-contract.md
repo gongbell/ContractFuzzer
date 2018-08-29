@@ -2,7 +2,8 @@
 
 ## Quick Start
 
-A container with the dependencies set up can be found [here](https://pan.baidu.com/s/1kMcbqR1BhOuOQ5Fap2Cld   password: 2pu8).
+A container with the dependencies set up can be found [here]
+(https://pan.baidu.com/s/1kMcbqR1BhOuOQ5Fap2Cld).(password:`2pu8`)
 
 To open the container, install docker and run:
 ```
