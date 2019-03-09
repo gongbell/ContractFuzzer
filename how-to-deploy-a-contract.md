@@ -4,28 +4,81 @@
 
 A container with the dependencies set up can be found [here](https://pan.baidu.com/s/1jcyJ8g1J41IBxLX7y61nxw).(password:`pq7u`)
 
-To open the container, install docker and run:
+Step 1. Load the image & Start the container:
 ```
 docker load<contract_deployer.tar && docker run -i -t contractfuzzer/deployer
 ```
 
-To deploy the example contracts `contract_deployer/examples/` inside the container, run:
+Step 2. Deploy the example contracts `contract_deployer/examples/` inside the container:
 
-```
-cd /ContractFuzzer && ./geth_run.sh
-cd /ContractFuzzer && ./deployer_run.sh
-```
-
-and finally you could see results afer contract has finishing deploying on chain in directory 
-
-`/ContractFuzzer/contract_deployer/examples/config/xxx.json`!
-
-the examples directory structure
 ```
   contract_deployer/examples
                     config
                     verified_contract_abis
                     verified_contract_bins
+```
+The process below will try to deploy `Aeternis` to private chain.　
+
+Run:
+```
+cd /ContractFuzzer && ./geth_run.sh
+cd /ContractFuzzer && ./deployer_run.sh
+```
+Step 3. Check whether Aeternis is deployed.
+`/ContractFuzzer/contract_deployer/examples/config/Aeternis.json` 
+
+Before deployment.
+
+```
+"contracts": [
+        {
+            "home": "/ContractFuzzer/contract_deployer",
+            "childhome": "/examples",
+            "from": "0x2b71cc952c8e3dfe97a696cf5c5b29f8a07de3d8",
+            "gas": "50000000000",
+            "name": "Aeternis",
+            "param_Names": [
+                "_owner"
+            ],
+            "param_Types": [
+                "address"
+            ],
+            "param_Values": {
+                "_owner": "0xed161fa9adad3ba4d30c829034c4745ef443e0d9"
+            },
+            "values": [
+                "0xed161fa9adad3ba4d30c829034c4745ef443e0d9"
+            ],
+            "payable": false,
+            "value": "1000000000"
+        }
+```
+
+After deployment. If success, `address` will be added and set to `Aeternis`'s private chain address.
+```
+"contracts": [
+        {
+            "home": "/ContractFuzzer/contract_deployer",
+            "childhome": "/examples",
+            "from": "0x2b71cc952c8e3dfe97a696cf5c5b29f8a07de3d8",
+            "gas": "50000000000",
+            "name": "Aeternis",
+            "param_Names": [
+                "_owner"
+            ],
+            "param_Types": [
+                "address"
+            ],
+            "param_Values": {
+                "_owner": "0xed161fa9adad3ba4d30c829034c4745ef443e0d9"
+            },
+            "values": [
+                "0xed161fa9adad3ba4d30c829034c4745ef443e0d9"
+            ],
+            "payable": false,
+            "value": "1000000000"
+            `address`:"0xbcf6fb693173f2a6c7c837a31717c403b496ccae"
+        }
 ```
 ## Custom Docker image build
 
