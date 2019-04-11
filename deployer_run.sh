@@ -1,2 +1,2 @@
 #!/bin/bash
-cd contract_deployer && bable-node ./utils/deploy-main.js 
+cd contract_deployer && babel-node ./utils/deploy-main.js 
