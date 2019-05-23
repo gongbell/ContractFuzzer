@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-A container with the dependencies set up can be found [here](链接:https://pan.baidu.com/s/1HwG3DNvNb32SxbQ1pyMwYQ).(password:`hgvv`)
+A container with the dependencies set up can be found [here](https://pan.baidu.com/s/1HwG3DNvNb32SxbQ1pyMwYQ).(password:`hgvv`)
 
 Step 1. Load the image & Start the container:
 ```
