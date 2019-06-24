@@ -79,12 +79,7 @@ After deployment. If success, `address` will be added and set to `Aeternis`'s pr
             `address`:"0xbcf6fb693173f2a6c7c837a31717c403b496ccae"
         }
 ```
-## Custom Docker image build
 
-```
-docker build -f deploy.Dockerfile -t contractfuzzer/deployer .
-docker run -it -e "ContractFuzzer=/contractFuzzer/deployer"  contractfuzzer/deployer:latest
-```
 ## Deploy Ethereum Contracts
 
 ### Prerequisites
