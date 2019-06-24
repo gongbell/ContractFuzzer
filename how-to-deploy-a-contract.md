@@ -89,13 +89,17 @@ After deployment. If success, `address` will be added and set to `Aeternis`'s pr
 3. The contract's configuration file provided.
 
 
-You can learn the formats from the existing contracts within docker.
+You can learn the formats from the existing contracts within docker. 
 ```
   contract_deployer/contracts
                         config
                         verified_contract_abis
                         verified_contract_bins
 ```
+The config directory contains a configuration file for contract deployment. You can copy and modify based on the arguments of the contracts you want to deploy.
+The verified_contract_abis contains the abi file downloaded from Etherscan.
+The verified_contract_bins contains the abi file downloaded from Etherscan by directly saving the Contract Creation Code into a bin file.
+. 
 Run 
 ```
 docker run -it -v YourEthereumPrivateChainPath:/ContractFuzzer/Ethereum -v your_contracts_to_deploy:/ContractFuzzer/contract_deployer/contracts  -e "ContractFuzzer=/contractFuzzer/contract_deployer"  ContractFuzzer/deployer:latest
@@ -107,7 +111,10 @@ cd /ContractFuzzer && ./deployer_run.sh
 Finally, you could find contract `address` in file 
 `/ContractFuzzer/contract_deployer/contracts/config/xxx.json`!
 
+
 # Notice
+
+Note that the deployment of the contract can be within the docker or on your local machine,as long as you have prepared the config, bin, and abi files. Within your local machine, after starting the geth client, you can run the ./deployer_run.sh shell script to deploy your smart contract. 
 
 The instruction is under change. And this needs efforts to make a success.
 
