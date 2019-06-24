@@ -44,7 +44,11 @@ docker run -it -e "ContractFuzzer=/contractFuzzer/ContractFuzzer"  ContractFuzze
 
 How to deploy a contract to Private Chain can be found [here](/how-to-deploy-a-contract.md).
 
-The tested contract's directory tree would be like below, similiar to that of the example contracts we provided.
+Note that the deployment of the contract can be within the docker or on your local machine,as long as you have prepared the config, bin, and abi files. Within your local machine, after starting the geth client, you can run the ./deployer_run.sh shell script to deploy your smart contract. 
+
+After deploying the smart contracts within the private chain, you also need to prepre the directory for the smart contracts. 
+
+The tested contract's directory tree (i.e., /yourTested_contract used in the command) would be like below, similiar to that of the example contracts we provided.
 ```
 tested_contract
     verified_contract_abis
@@ -71,6 +75,9 @@ tested_contract
 ```
 docker run -it -v /YourGethEthereumPrivateChain:/Ethereum -v /yourTested_contract:/ContractFuzzer/tested_contract -e "ContractFuzzer=/contractFuzzer/ContractFuzzer"  ContractFuzzer:latest
 ```
+
+Note the /YourGethEthereumPrivateChain is the path of your Ethereum private chain on which you have deployed the smart contracts to test.  
+
 
 Now step into the container,run
 ```
