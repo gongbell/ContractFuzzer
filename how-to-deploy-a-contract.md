@@ -98,8 +98,8 @@ You can learn the formats from the existing contracts within docker.
 ```
 The config directory contains a configuration file for contract deployment. You can copy and modify based on the arguments of the contracts you want to deploy.
 The verified_contract_abis contains the abi file downloaded from Etherscan.
-The verified_contract_bins contains the abi file downloaded from Etherscan by directly saving the Contract Creation Code into a bin file.
-. 
+The verified_contract_bins contains the bin file downloaded from Etherscan by directly saving the Contract Creation Code into a bin file.
+
 Run 
 ```
 docker run -it -v YourEthereumPrivateChainPath:/ContractFuzzer/Ethereum -v your_contracts_to_deploy:/ContractFuzzer/contract_deployer/contracts  -e "ContractFuzzer=/contractFuzzer/contract_deployer"  ContractFuzzer/deployer:latest
