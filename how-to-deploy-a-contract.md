@@ -9,10 +9,10 @@ Step 1. Load the image & Start the container:
 docker load<contract_deployer.tar && docker run -i -t contractfuzzer/deployer
 ```
 
-Step 2. Deploy the example contracts `contract_deployer/examples/` inside the container:
+Step 2. Deploy the example contracts `contract_deployer/contracts/` inside the container:
 
 ```
-  contract_deployer/examples
+  contract_deployer/contracts
                     config
                     verified_contract_abis
                     verified_contract_bins
@@ -21,11 +21,10 @@ The process below will try to deploy `Aeternis` to private chain.　
 
 Run:
 ```
-cd /ContractFuzzer && ./geth_run.sh
 cd /ContractFuzzer && ./deployer_run.sh
 ```
 Step 3. Check whether Aeternis is deployed.
-`/ContractFuzzer/contract_deployer/examples/config/Aeternis.json` 
+`/ContractFuzzer/contract_deployer/contracts/config/Aeternis.json` 
 
 Before deployment.
 
@@ -33,7 +32,7 @@ Before deployment.
 "contracts": [
         {
             "home": "/ContractFuzzer/contract_deployer",
-            "childhome": "/examples",
+            "childhome": "/contracts",
             "from": "0x2b71cc952c8e3dfe97a696cf5c5b29f8a07de3d8",
             "gas": "50000000000",
             "name": "Aeternis",
@@ -59,7 +58,7 @@ After deployment. If success, `address` will be added and set to `Aeternis`'s pr
 "contracts": [
         {
             "home": "/ContractFuzzer/contract_deployer",
-            "childhome": "/examples",
+            "childhome": "/contracts",
             "from": "0x2b71cc952c8e3dfe97a696cf5c5b29f8a07de3d8",
             "gas": "50000000000",
             "name": "Aeternis",
