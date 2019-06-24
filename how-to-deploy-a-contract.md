@@ -13,9 +13,9 @@ Step 2. Deploy the example contracts `contract_deployer/contracts/` inside the c
 
 ```
   contract_deployer/contracts
-                    config
-                    verified_contract_abis
-                    verified_contract_bins
+                      config
+                      verified_contract_abis
+                      verified_contract_bins
 ```
 The process below will try to deploy `Aeternis` to private chain.　
 
@@ -86,26 +86,26 @@ After deployment. If success, `address` will be added and set to `Aeternis`'s pr
 
 1. The contract's abi definition file provided.
 2. The contract's bin file provided
+3. The contract's configuration file provided.
 
-the examples directory structure
+
+You can learn the formats from the existing contracts within docker.
 ```
-  contract_deployer/examples
-                    config
-                    verified_contract_abis
-                    verified_contract_bins
+  contract_deployer/contracts
+                        config
+                        verified_contract_abis
+                        verified_contract_bins
 ```
 Run 
 ```
-docker run -it -v /host/YourEthereumPrivateChainPath:/ContractFuzzer/Ethereum -v /host/contracts_to_deploy:/ContractFuzzer/contracts_to_deploy -e "ContractFuzzer=/contractFuzzer/deployer"  ContractFuzzer/deployer:latest
+docker run -it -v YourEthereumPrivateChainPath:/ContractFuzzer/Ethereum -v your_contracts_to_deploy:/ContractFuzzer/contract_deployer/contracts  -e "ContractFuzzer=/contractFuzzer/contract_deployer"  ContractFuzzer/deployer:latest
 ```
-what to do next is to update enviroment file `.env` under `contract_deployer`
-
-After updating. Step into containner,Run
+Then Run
 ```
-cd contract_deployer&&babel-node ./utils/deploy-main.js
+cd /ContractFuzzer && ./deployer_run.sh
 ```
 Finally, you could find contract `address` in file 
-`/ContractFuzzer/contract_deployer/examples/config/xxx.json`!
+`/ContractFuzzer/contract_deployer/contracts/config/xxx.json`!
 
 # Notice
 
