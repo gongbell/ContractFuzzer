@@ -1,0 +1,1 @@
+[{"constant":false,"inputs":[{"name":"to","type":"address"}],"name":"transferIfHF","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"}],"name":"transferIfNoHF","outputs":[],"type":"function"}]
