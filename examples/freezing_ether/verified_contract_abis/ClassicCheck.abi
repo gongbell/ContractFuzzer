@@ -1,0 +1,1 @@
+[{"constant":true,"inputs":[],"name":"isClassic","outputs":[{"name":"isClassic","type":"bool"}],"type":"function"},{"constant":true,"inputs":[],"name":"classic","outputs":[{"name":"","type":"bool"}],"type":"function"},{"inputs":[],"type":"constructor"}]

@@ -1,0 +1,1 @@
+[{"constant":true,"inputs":[{"name":"x","type":"uint256"},{"name":"y","type":"uint256"}],"name":"tolerantSub","outputs":[{"name":"z","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]
