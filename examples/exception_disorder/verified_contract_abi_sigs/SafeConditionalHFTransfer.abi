@@ -1,0 +1,1 @@
+[{"constant":false,"inputs":[{"name":"to","type":"address"}],"name":"transfer","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"}],"name":"classicTransfer","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"}]

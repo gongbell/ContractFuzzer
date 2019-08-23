@@ -1,0 +1,1 @@
+[{"constant":false,"inputs":[{"name":"ethAddress","type":"address"},{"name":"etcAddress","type":"address"}],"name":"split","outputs":[],"type":"function"}]
