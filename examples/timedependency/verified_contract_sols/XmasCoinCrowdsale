@@ -1,0 +1,443 @@
+pragma solidity ^0.4.18;
+
+/**
+ * @title SafeMath
+ * @dev Math operations with safety checks that throw on error
+ */
+library SafeMath {
+  function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+    if (a == 0) {
+      return 0;
+    }
+    uint256 c = a * b;
+    assert(c / a == b);
+    return c;
+  }
+
+  function div(uint256 a, uint256 b) internal pure returns (uint256) {
+    // assert(b > 0); // Solidity automatically throws when dividing by 0
+    uint256 c = a / b;
+    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+    return c;
+  }
+
+  function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+    assert(b <= a);
+    return a - b;
+  }
+
+  function add(uint256 a, uint256 b) internal pure returns (uint256) {
+    uint256 c = a + b;
+    assert(c >= a);
+    return c;
+  }
+}
+
+/**
+ * @title Ownable
+ * @dev The Ownable contract has an owner address, and provides basic authorization control
+ * functions, this simplifies the implementation of "user permissions".
+ */
+contract Ownable {
+  address public owner;
+
+
+  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+
+  /**
+   * @dev The Ownable constructor sets the original `owner` of the contract to the sender
+   * account.
+   */
+  function Ownable() public {
+    owner = msg.sender;
+  }
+
+
+  /**
+   * @dev Throws if called by any account other than the owner.
+   */
+  modifier onlyOwner() {
+    require(msg.sender == owner);
+    _;
+  }
+
+
+  /**
+   * @dev Allows the current owner to transfer control of the contract to a newOwner.
+   * @param newOwner The address to transfer ownership to.
+   */
+  function transferOwnership(address newOwner) public onlyOwner {
+    require(newOwner != address(0));
+    OwnershipTransferred(owner, newOwner);
+    owner = newOwner;
+  }
+
+}
+/**
+ * @title Pausable
+ * @dev Base contract which allows children to implement an emergency stop mechanism.
+ */
+contract Pausable is Ownable {
+  event Pause();
+  event Unpause();
+
+  bool public paused = false;
+
+
+  /**
+   * @dev Modifier to make a function callable only when the contract is not paused.
+   */
+  modifier whenNotPaused() {
+    require(!paused);
+    _;
+  }
+
+  /**
+   * @dev Modifier to make a function callable only when the contract is paused.
+   */
+  modifier whenPaused() {
+    require(paused);
+    _;
+  }
+
+  /**
+   * @dev called by the owner to pause, triggers stopped state
+   */
+  function pause() onlyOwner whenNotPaused public {
+    paused = true;
+    Pause();
+  }
+
+  /**
+   * @dev called by the owner to unpause, returns to normal state
+   */
+  function unpause() onlyOwner whenPaused public {
+    paused = false;
+    Unpause();
+  }
+}
+
+/**
+ * @title TokenDestructible:
+ * @author Remco Bloemen <<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3745525a54587705">[email protected]</a>π.com&gt;&#13;
+ * @dev Base contract that can be destroyed by owner. All funds in contract including&#13;
+ * listed tokens will be sent to the owner.&#13;
+ */&#13;
+contract TokenDestructible is Ownable {&#13;
+&#13;
+  function TokenDestructible() public payable { }&#13;
+&#13;
+  /**&#13;
+   * @notice Terminate contract and refund to owner&#13;
+   * @param tokens List of addresses of ERC20 or ERC20Basic token contracts to&#13;
+   refund.&#13;
+   * @notice The called token contracts could try to re-enter this contract. Only&#13;
+   supply token contracts you trust.&#13;
+   */&#13;
+  function destroy(address[] tokens) onlyOwner public {&#13;
+&#13;
+    // Transfer tokens to owner&#13;
+    for(uint256 i = 0; i &lt; tokens.length; i++) {&#13;
+      ERC20Basic token = ERC20Basic(tokens[i]);&#13;
+      uint256 balance = token.balanceOf(this);&#13;
+      token.transfer(owner, balance);&#13;
+    }&#13;
+&#13;
+    // Transfer Eth to owner and terminate contract&#13;
+    selfdestruct(owner);&#13;
+  }&#13;
+}&#13;
+&#13;
+/**&#13;
+ * @title ERC20Basic&#13;
+ * @dev Simpler version of ERC20 interface&#13;
+ * @dev see https://github.com/ethereum/EIPs/issues/179&#13;
+ */&#13;
+contract ERC20Basic {&#13;
+  uint256 public totalSupply;&#13;
+  function balanceOf(address who) public view returns (uint256);&#13;
+  function transfer(address to, uint256 value) public returns (bool);&#13;
+  event Transfer(address indexed from, address indexed to, uint256 value);&#13;
+}&#13;
+&#13;
+/**&#13;
+ * @title ERC20 interface&#13;
+ * @dev see https://github.com/ethereum/EIPs/issues/20&#13;
+ */&#13;
+contract ERC20 is ERC20Basic {&#13;
+  function allowance(address owner, address spender) public view returns (uint256);&#13;
+  function transferFrom(address from, address to, uint256 value) public returns (bool);&#13;
+  function approve(address spender, uint256 value) public returns (bool);&#13;
+  event Approval(address indexed owner, address indexed spender, uint256 value);&#13;
+}&#13;
+&#13;
+/**&#13;
+ * @title Basic token&#13;
+ * @dev Basic version of StandardToken, with no allowances.&#13;
+ */&#13;
+contract BasicToken is ERC20Basic {&#13;
+  using SafeMath for uint256;&#13;
+&#13;
+  mapping(address =&gt; uint256) balances;&#13;
+&#13;
+  /**&#13;
+  * @dev transfer token for a specified address&#13;
+  * @param _to The address to transfer to.&#13;
+  * @param _value The amount to be transferred.&#13;
+  */&#13;
+  function transfer(address _to, uint256 _value) public returns (bool) {&#13;
+    require(_to != address(0));&#13;
+    require(_value &lt;= balances[msg.sender]);&#13;
+&#13;
+    // SafeMath.sub will throw if there is not enough balance.&#13;
+    balances[msg.sender] = balances[msg.sender].sub(_value);&#13;
+    balances[_to] = balances[_to].add(_value);&#13;
+    Transfer(msg.sender, _to, _value);&#13;
+    return true;&#13;
+  }&#13;
+&#13;
+  /**&#13;
+  * @dev Gets the balance of the specified address.&#13;
+  * @param _owner The address to query the the balance of.&#13;
+  * @return An uint256 representing the amount owned by the passed address.&#13;
+  */&#13;
+  function balanceOf(address _owner) public view returns (uint256 balance) {&#13;
+    return balances[_owner];&#13;
+  }&#13;
+&#13;
+}&#13;
+&#13;
+/**&#13;
+ * @title Standard ERC20 token&#13;
+ *&#13;
+ * @dev Implementation of the basic standard token.&#13;
+ * @dev https://github.com/ethereum/EIPs/issues/20&#13;
+ * @dev Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol&#13;
+ */&#13;
+contract StandardToken is ERC20, BasicToken {&#13;
+&#13;
+  mapping (address =&gt; mapping (address =&gt; uint256)) internal allowed;&#13;
+&#13;
+&#13;
+  /**&#13;
+   * @dev Transfer tokens from one address to another&#13;
+   * @param _from address The address which you want to send tokens from&#13;
+   * @param _to address The address which you want to transfer to&#13;
+   * @param _value uint256 the amount of tokens to be transferred&#13;
+   */&#13;
+  function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {&#13;
+    require(_to != address(0));&#13;
+    require(_value &lt;= balances[_from]);&#13;
+    require(_value &lt;= allowed[_from][msg.sender]);&#13;
+&#13;
+    balances[_from] = balances[_from].sub(_value);&#13;
+    balances[_to] = balances[_to].add(_value);&#13;
+    allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);&#13;
+    Transfer(_from, _to, _value);&#13;
+    return true;&#13;
+  }&#13;
+&#13;
+  /**&#13;
+   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.&#13;
+   *&#13;
+   * Beware that changing an allowance with this method brings the risk that someone may use both the old&#13;
+   * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this&#13;
+   * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:&#13;
+   * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729&#13;
+   * @param _spender The address which will spend the funds.&#13;
+   * @param _value The amount of tokens to be spent.&#13;
+   */&#13;
+  function approve(address _spender, uint256 _value) public returns (bool) {&#13;
+    allowed[msg.sender][_spender] = _value;&#13;
+    Approval(msg.sender, _spender, _value);&#13;
+    return true;&#13;
+  }&#13;
+&#13;
+  /**&#13;
+   * @dev Function to check the amount of tokens that an owner allowed to a spender.&#13;
+   * @param _owner address The address which owns the funds.&#13;
+   * @param _spender address The address which will spend the funds.&#13;
+   * @return A uint256 specifying the amount of tokens still available for the spender.&#13;
+   */&#13;
+  function allowance(address _owner, address _spender) public view returns (uint256) {&#13;
+    return allowed[_owner][_spender];&#13;
+  }&#13;
+&#13;
+  /**&#13;
+   * approve should be called when allowed[_spender] == 0. To increment&#13;
+   * allowed value is better to use this function to avoid 2 calls (and wait until&#13;
+   * the first transaction is mined)&#13;
+   * From MonolithDAO Token.sol&#13;
+   */&#13;
+  function increaseApproval(address _spender, uint _addedValue) public returns (bool) {&#13;
+    allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);&#13;
+    Approval(msg.sender, _spender, allowed[msg.sender][_spender]);&#13;
+    return true;&#13;
+  }&#13;
+&#13;
+  function decreaseApproval(address _spender, uint _subtractedValue) public returns (bool) {&#13;
+    uint oldValue = allowed[msg.sender][_spender];&#13;
+    if (_subtractedValue &gt; oldValue) {&#13;
+      allowed[msg.sender][_spender] = 0;&#13;
+    } else {&#13;
+      allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);&#13;
+    }&#13;
+    Approval(msg.sender, _spender, allowed[msg.sender][_spender]);&#13;
+    return true;&#13;
+  }&#13;
+&#13;
+}&#13;
+&#13;
+&#13;
+&#13;
+/**&#13;
+ * @title XmasCoin&#13;
+ * @dev Very simple ERC20 Token example, where all tokens are pre-assigned to the creator.&#13;
+ * Note they can later distribute these tokens as they wish using `transfer` and other&#13;
+ * `StandardToken` functions.&#13;
+ */&#13;
+contract XmasCoin is StandardToken, Ownable, TokenDestructible {&#13;
+&#13;
+  string public constant name = "XmasCoin";&#13;
+  string public constant symbol = "XMX";&#13;
+  uint8 public constant decimals = 18;&#13;
+  string public constant version = "1.0";&#13;
+&#13;
+    address public constant partnersWallet = 0x3cEC63f5413aeD639b5903520241BF0ba88dEDbd;&#13;
+    address public constant bountyWallet = 0x5D7Eaa2d20B51ac8288C49083728b419393cF5eF;&#13;
+&#13;
+    uint256 public totalSupply = 10000000 * (10 ** uint256(decimals));&#13;
+&#13;
+  /**&#13;
+   * @dev Constructor that gives msg.sender all of existing tokens.&#13;
+   */&#13;
+  function XmasCoin() public {&#13;
+    balances[msg.sender] = totalSupply;&#13;
+&#13;
+    uint256 partners = totalSupply.div(100).mul(24); // 24% of all tokens&#13;
+    transfer(partnersWallet, partners);&#13;
+    uint256 bounty = totalSupply.div(100).mul(1); // 24% of all tokens&#13;
+    transfer(bountyWallet, bounty);&#13;
+    &#13;
+  }&#13;
+&#13;
+   /**&#13;
+    * @dev Burns a specific amount of tokens.&#13;
+    * @param _value The amount of token to be burned.&#13;
+    */&#13;
+    function burn(uint256 _value) public onlyOwner {&#13;
+        //require(balances[owner]&gt;=_value);&#13;
+        balances[owner] -= _value;&#13;
+        totalSupply -= _value;&#13;
+    }&#13;
+}&#13;
+&#13;
+/**&#13;
+ * @title Crowdsale&#13;
+ * @dev Crowdsale is a base contract for managing a token crowdsale.&#13;
+ * Crowdsales have a start and end timestamps, where investors can make&#13;
+ * token purchases and the crowdsale will assign them tokens based&#13;
+ * on a token per ETH rate. Funds collected are forwarded to a wallet&#13;
+ * as they arrive.&#13;
+ */&#13;
+contract XmasCoinCrowdsale is Ownable, Pausable, TokenDestructible {&#13;
+  using SafeMath for uint256;&#13;
+&#13;
+  // The token being sold&#13;
+  XmasCoin public token;&#13;
+&#13;
+  // amount of raised money in wei&#13;
+  //uint256 public weiRaised;&#13;
+  // amount of raised money in wei&#13;
+  uint256 public tokenRaised;&#13;
+&#13;
+    uint256 public constant cap = 7500000 * (10 ** uint256(18));&#13;
+&#13;
+    bool public crowdsaleClosed = false;&#13;
+&#13;
+  /**&#13;
+   * event for token purchase logging&#13;
+   * @param purchaser who paid for the tokens&#13;
+   * @param beneficiary who got the tokens&#13;
+   * @param value weis paid for purchase&#13;
+   * @param amount amount of tokens purchased&#13;
+   */&#13;
+  event TokenPurchase(address indexed purchaser, address indexed beneficiary, uint256 value, uint256 amount);&#13;
+&#13;
+  uint256 constant public startTime = 1512305200;&#13;
+  uint256 constant public endTime = 1515369599;&#13;
+  address constant public wallet = 0xE0D9f548E5A62C7a06F0690edE9621BF17620683;&#13;
+&#13;
+  function XmasCoinCrowdsale() public {&#13;
+    token = new XmasCoin();&#13;
+  }&#13;
+&#13;
+&#13;
+&#13;
+  // function to get the price of the token&#13;
+  // returns how many token units a buyer gets per wei, needs to be divided by 10&#13;
+  function getRate() public constant returns (uint256) { //(uint8) {&#13;
+    if      (block.timestamp &lt;= 1513382399)          return 45000; // 50% bonus&#13;
+    else if (block.timestamp &lt;= 1514246399)          return 39000;&#13;
+    else if (block.timestamp &lt;= 1514764799)          return 36000;&#13;
+    return 30000;&#13;
+  }&#13;
+&#13;
+&#13;
+  // fallback function can be used to buy tokens&#13;
+  function () external payable {&#13;
+    buyTokens(msg.sender);&#13;
+  }&#13;
+&#13;
+  // low level token purchase function&#13;
+  function buyTokens(address beneficiary) whenNotPaused public payable {&#13;
+    require(beneficiary != address(0));&#13;
+    require(validPurchase());&#13;
+&#13;
+    uint256 weiAmount = msg.value;&#13;
+&#13;
+    // calculate token amount to be created&#13;
+    uint256 tokens = weiAmount.mul(getRate()).div(10);&#13;
+   &#13;
+&#13;
+    // update state&#13;
+    //weiRaised = weiRaised.add(weiAmount);&#13;
+    tokenRaised = tokenRaised.add(tokens);&#13;
+&#13;
+     if(!((cap.sub(tokenRaised))&gt;=0)) {&#13;
+      revert();&#13;
+    }&#13;
+&#13;
+    wallet.transfer(msg.value);&#13;
+    token.transfer(beneficiary, tokens);&#13;
+    TokenPurchase(msg.sender, beneficiary, weiAmount, tokens);&#13;
+  }&#13;
+&#13;
+  // @return true if the transaction can buy tokens&#13;
+  function validPurchase() internal view returns (bool) {&#13;
+    bool withinPeriod = now &gt;= startTime &amp;&amp; now &lt;= endTime;&#13;
+    bool nonZeroPurchase = msg.value != 0;&#13;
+    return withinPeriod &amp;&amp; nonZeroPurchase;&#13;
+  }&#13;
+&#13;
+    /*	&#13;
+	 * Finalize the crowdsale, should be called after the refund period&#13;
+	*/&#13;
+    function finalize() onlyOwner public {&#13;
+        require(!crowdsaleClosed);&#13;
+&#13;
+        if(now &lt; endTime) {&#13;
+            require(tokenRaised == cap);&#13;
+        }&#13;
+        require(wallet.send(this.balance));&#13;
+        uint remains = cap.sub(tokenRaised);&#13;
+        if (remains&gt;0) {&#13;
+          token.burn(remains);&#13;
+        }&#13;
+&#13;
+        crowdsaleClosed = true;&#13;
+    }&#13;
+&#13;
+&#13;
+}
