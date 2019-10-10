@@ -9,6 +9,12 @@ released under GPL v3 license.
 
 Any questions with the tool, please contact Dr. Bo Jiang. gongbell@gmail.com
 
+## NEW！
+
+We have manually verified a benchmark of vulnerable smart contracts detected by ContractFuzzer. Their source and bins are located at https://github.com/gongbell/ContractFuzzer/tree/master/examples 
+
+Please tell us if there is any false postives.
+
 ## Quick Start
 
 A container with the dependencies set up can be found [here](https://pan.baidu.com/s/1NZJGY4Zks0ZulPt5QnScCA).(password:`l2ww`)
