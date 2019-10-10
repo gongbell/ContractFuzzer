@@ -15,5 +15,4 @@ The argument of delegatecall can be provide by msg.data.
 ### Freezing Ether 
 Smart contracts can receive ether but cannot send ether except through delegatecall.
 ## Folder structure
-Each vulnerability directory will contain at least three sub-folders: abis, bins, and sols, which store the contract's abi file, bin file, and sol file. The contents of these three folders are available to run the Contractfuzzer tool. 
-In addition, each vulnerability directory will have a "*.list" file that records all the vulnerability contract names in this folder.
+Each vulnerability directory will contain at least three sub-folders: abis, bins, and sols, which store the contract's abi file, bin file, and sol file. The contents of these three folders are available to run the Contractfuzzer tool. In addition, each vulnerability directory will have a "*.list" file that records all the vulnerability contract names in this folder.
