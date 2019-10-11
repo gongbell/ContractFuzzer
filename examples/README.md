@@ -18,8 +18,8 @@ Smart contracts can receive ether but cannot send ether except through delegatec
 ## Folder structure
 Each vulnerability directory contains at least three sub-folders: abis, bins, and sols, which store the contract's abi file, bin file, and sol file. The contents of these three folders are available to run the Contractfuzzer tool. In addition, each vulnerability directory will have a "*.list" file that records names of all the vulnerability contracts in this folder. For ease of reference, We list all names as follows by vulnerability type.
 ### Gasless Send
-BetBuyer<br>
-BigRisk<br>
+BetBuyer                                            BigRisk<br>
+<br>
 BuyerFund<br>
 CreditDepositBank<br>
 CryptoChamps<br>
