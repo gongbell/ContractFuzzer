@@ -17,7 +17,7 @@ Relying Block Number to decide ether transfer.
 Relying timestamp to decide ether transfer.	
 ## Folder structure
 Each vulnerability directory contains at least three sub-folders: abis, bins, and sols, which store the contract's abi file, bin file, and sol file. The contents of these three folders are available to run the Contractfuzzer tool. In addition, each vulnerability directory will have a "*.list" file that records names of all the vulnerability contracts in this folder. For ease of reference, We list all names as follows by vulnerability type.
-### Dangerous DelegateCall
+### Dangerous DelegateCall（7）
 DSProxy<br>
 RiskSharingToken<br>
 WyvernDAOProxy<br>
@@ -25,7 +25,7 @@ MultiSigStub<br>
 Parsec<br>
 Ciphs<br>
 CBToken<br>
-### Freezing Ether 
+### Freezing Ether （8）
 AmIOnTheFork<br>
 ClassicCheck<br>
 DateTime<br>
@@ -34,7 +34,7 @@ Math<br>
 SafeMathLibExt<br>
 TokenEventLib<br>
 UintLib<br>
-### Reentrancy
+### Reentrancy（13）
 BountyHunt<br>
 ETH_VAULT<br>
 Forwarder<br>
@@ -48,7 +48,7 @@ Private_accumaulation_fund<br>
 PrivateBank<br>
 PrivateDeposit<br>
 ProxyCreationAndExecute<br>
-### Gasless Send
+### Gasless Send（17）
 BetBuyer<br>
 BigRisk<br>
 BuyerFund<br>
@@ -66,7 +66,7 @@ NumberBoard<br>
 Reward<br>
 SafeConditionalHFTransfer<br>
 Soleau<br>
-### Exception Disorder
+### Exception Disorder（38）
 FarmCoinSale<br>
 CrowdSalePreICO<br>
 IPchainStandardToken<br>
@@ -105,7 +105,7 @@ HelpMeSave<br>
 PonziUnlimited<br>
 CoinContract<br>
 TokenPurchase<br>
-### Block Number Dependency
+### Block Number Dependency（37）
 APPToken<br>
 Bagholder<br>
 Bob<br>
@@ -143,7 +143,7 @@ Videos<br>
 WolkToken<br>
 Wolker<br>
 XCTCrowdSale<br>
-### Timestamp Dependency
+### Timestamp Dependency（152）
 LitmusCrowdsale<br>
 LotteryAdmin<br>
 CryptoCarsRent<br>
