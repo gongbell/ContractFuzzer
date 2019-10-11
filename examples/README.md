@@ -1,22 +1,53 @@
 # Ethereum Vulnerable Smart Contract Benchmark
 ## Vulnerability type
 We present a brief definition of the vulnerability here.
-### Gasless Send
-Send() triggers out of gas exception due to expensive fallback & sender keep ether wrongfully.	
-### Exception Disorder
-Inconsistent error propagation of low-level calls.
-### Reentrancy
-Nonreentrant function invoked in reentrant manner.
-### Timestamp Dependency
-Relying timestamp to decide ether transfer.	
-### Block Number Dependency
-Relying Block Number to decide ether transfer.	
 ### Dangerous DelegateCall
 The argument of delegatecall can be provide by msg.data.
 ### Freezing Ether 
 Smart contracts can receive ether but cannot send ether except through delegatecall.
+### Reentrancy
+Nonreentrant function invoked in reentrant manner.
+### Gasless Send
+Send() triggers out of gas exception due to expensive fallback & sender keep ether wrongfully.	
+### Exception Disorder
+Inconsistent error propagation of low-level calls.
+### Block Number Dependency
+Relying Block Number to decide ether transfer.	
+### Timestamp Dependency
+Relying timestamp to decide ether transfer.	
 ## Folder structure
 Each vulnerability directory contains at least three sub-folders: abis, bins, and sols, which store the contract's abi file, bin file, and sol file. The contents of these three folders are available to run the Contractfuzzer tool. In addition, each vulnerability directory will have a "*.list" file that records names of all the vulnerability contracts in this folder. For ease of reference, We list all names as follows by vulnerability type.
+### Dangerous DelegateCall
+DSProxy<br>
+RiskSharingToken<br>
+WyvernDAOProxy<br>
+MultiSigStub<br>
+Parsec<br>
+Ciphs<br>
+CBToken<br>
+### Freezing Ether 
+AmIOnTheFork<br>
+ClassicCheck<br>
+DateTime<br>
+DateTimeLib<br>
+Math<br>
+SafeMathLibExt<br>
+TokenEventLib<br>
+UintLib<br>
+### Reentrancy
+BountyHunt<br>
+ETH_VAULT<br>
+Forwarder<br>
+FunFairSale<br>
+InkPublicPresale<br>
+LZLCoin<br>
+Payee<br>
+PIGGY_BANK<br>
+PowerCoin<br>
+Private_accumaulation_fund<br>
+PrivateBank<br>
+PrivateDeposit<br>
+ProxyCreationAndExecute<br>
 ### Gasless Send
 BetBuyer<br>
 BigRisk<br>
@@ -74,20 +105,44 @@ HelpMeSave<br>
 PonziUnlimited<br>
 CoinContract<br>
 TokenPurchase<br>
-### Reentrancy
-BountyHunt<br>
-ETH_VAULT<br>
-Forwarder<br>
-FunFairSale<br>
-InkPublicPresale<br>
-LZLCoin<br>
-Payee<br>
-PIGGY_BANK<br>
-PowerCoin<br>
-Private_accumaulation_fund<br>
-PrivateBank<br>
-PrivateDeposit<br>
-ProxyCreationAndExecute<br>
+### Block Number Dependency
+APPToken<br>
+Bagholder<br>
+Bob<br>
+Bombs<br>
+CABCoinICO<br>
+CHEXToken<br>
+CompetitionStore<br>
+CrowdsaleTokens<br>
+CryptoDuels<br>
+CryptoGoldStandardCoin<br>
+CryptoPoosToken<br>
+Cubic<br>
+DIVXToken<br>
+Dil<br>
+DoubleOrNothingImpl<br>
+FarmCoinSale<br>
+FidgETHSpinner<br>
+HashToken<br>
+KeberuntunganAcak<br>
+KiddyToys<br>
+MUSCToken<br>
+MoacToken<br>
+NFTHouseGame<br>
+NatCoinCrowdsale<br>
+OurRoulette<br>
+PreIcoCrowdsale<br>
+Profit1000<br>
+REPOExchange<br>
+RandoCoin<br>
+SCCsale<br>
+STRIMToken<br>
+SatoshiDice<br>
+SmartBillions<br>
+Videos<br>
+WolkToken<br>
+Wolker<br>
+XCTCrowdSale<br>
 ### Timestamp Dependency
 LitmusCrowdsale<br>
 LotteryAdmin<br>
@@ -241,58 +296,3 @@ ListingsERC20<br>
 Avalanche<br>
 ArbiPreIco<br>
 MarchMadness<br>
-### Block Number Dependency
-APPToken<br>
-Bagholder<br>
-Bob<br>
-Bombs<br>
-CABCoinICO<br>
-CHEXToken<br>
-CompetitionStore<br>
-CrowdsaleTokens<br>
-CryptoDuels<br>
-CryptoGoldStandardCoin<br>
-CryptoPoosToken<br>
-Cubic<br>
-DIVXToken<br>
-Dil<br>
-DoubleOrNothingImpl<br>
-FarmCoinSale<br>
-FidgETHSpinner<br>
-HashToken<br>
-KeberuntunganAcak<br>
-KiddyToys<br>
-MUSCToken<br>
-MoacToken<br>
-NFTHouseGame<br>
-NatCoinCrowdsale<br>
-OurRoulette<br>
-PreIcoCrowdsale<br>
-Profit1000<br>
-REPOExchange<br>
-RandoCoin<br>
-SCCsale<br>
-STRIMToken<br>
-SatoshiDice<br>
-SmartBillions<br>
-Videos<br>
-WolkToken<br>
-Wolker<br>
-XCTCrowdSale<br>
-### Dangerous DelegateCall
-DSProxy<br>
-RiskSharingToken<br>
-WyvernDAOProxy<br>
-MultiSigStub<br>
-Parsec<br>
-Ciphs<br>
-CBToken<br>
-### Freezing Ether 
-AmIOnTheFork<br>
-ClassicCheck<br>
-DateTime<br>
-DateTimeLib<br>
-Math<br>
-SafeMathLibExt<br>
-TokenEventLib<br>
-UintLib<br>
