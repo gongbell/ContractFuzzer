@@ -11,7 +11,7 @@ Any questions with the tool, please contact Dr. Bo Jiang. gongbell@gmail.com
 
 ## NEW！
 
-We have manually verified a benchmark of vulnerable smart contracts detected by ContractFuzzer. Their source and bins are located at https://github.com/gongbell/ContractFuzzer/blob/master/examples/README.md
+We have manually verified a benchmark of vulnerable smart contracts detected by ContractFuzzer. Their source and bins are located at https://github.com/gongbell/ContractFuzzer/blob/master/examples
 
 Please tell us if there is any false postives.
 
