@@ -17,14 +17,35 @@ Relying Block Number to decide ether transfer.
 Relying timestamp to decide ether transfer.	
 ## Folder structure
 Each vulnerability directory contains at least three sub-folders: abis, bins, and sols, which store the contract's abi file, bin file, and sol file. The contents of these three folders are available to run the Contractfuzzer tool. In addition, each vulnerability directory will have a "*.list" file that records names of all the vulnerability contracts in this folder. For ease of reference, We list all names as follows by vulnerability type.
-### Dangerous DelegateCall（7）
+### Dangerous DelegateCall（28）
+AdminInterface<br>
+B0xProxy<br>
+BdpEntryPoint<br>
+CBToken<br>
+Ciphs<br>
+ControllerProxy<br>
+CvcProxy<br>
+Delegatecall<br>
+Destroy<br>
 DSProxy<br>
-RiskSharingToken<br>
-WyvernDAOProxy<br>
+EDProxy<br>
+FNBToken<br>
+KnowledgeProxy<br>
+LANDProxy<br>
+LetMeIn<br>
+Masker<br>
+MultiEventsHistory<br>
 MultiSigStub<br>
 Parsec<br>
-Ciphs<br>
-CBToken<br>
+RipplePayMain<br>
+RiskSharingToken<br>
+Router<br>
+StackDepthLib<br>
+TransferReg<br>
+UserWallet<br>
+WalletProxy<br>
+WyvernDAOProxy<br>
+ZwtTokenProxy<br>
 ### Freezing Ether （8）
 AmIOnTheFork<br>
 ClassicCheck<br>
