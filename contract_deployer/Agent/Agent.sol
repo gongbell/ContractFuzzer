@@ -9,9 +9,9 @@ contract Agent{
     function() payable{
      if (turnoff){
         count ++;
-        //turnoff set to false before statement "call_contract_addr.call.." rather than afer.
-        //As we aim to test reentrancy only one times and  
-        //more times for reentrancy is unnecessary.
+        //turnoff set to false before executing statement "call_contract_addr.call..".
+        //As we aim to test reentrancy only one time and  
+        //Testing more times for reentrancy is unnecessary.
         turnoff = false;
         call_contract_addr.call(call_msg_data);
         
