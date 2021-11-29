@@ -4,21 +4,22 @@
 * 2 while all contract calls triggered by one transaction finish,check oracle status.
 * 3 Write corresponding  info to 0x***-UTime.log in detail
 *    and append this info profile to Oracle.log
-*/
+ */
 
 package vm
 
 import (
 	"encoding/hex"
-	"fmt"
-	"io"
-	"math/big"
-	"github.com/ethereum/go-ethereum/common"
-	"runtime"
-	"log"
 	"encoding/json"
+	"fmt"
+	"github.com/ethereum/go-ethereum/common"
+	"io"
+	"log"
+	"math/big"
 	"net/http"
 	"net/url"
+	"os"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -39,95 +40,96 @@ type HackerContractCall struct {
 	nextcalls      []*HackerContractCall
 	OperationStack *HackerOperationStack
 	StateStack     *HackerStateStack
-	throwException  bool
-	errOutGas       bool
-	errOutBalance   bool
-	snapshotId      int
-	nextRevisionId  int
+	throwException bool
+	errOutGas      bool
+	errOutBalance  bool
+	snapshotId     int
+	nextRevisionId int
 }
-func CallsPointerToString(calls []*HackerContractCall) string{
-	if len(calls)== 0{
+
+func CallsPointerToString(calls []*HackerContractCall) string {
+	if len(calls) == 0 {
 		return ""
 	}
 	var Data string
 	Data = ""
-	for _,call := range  calls{
-		Data = Data +fmt.Sprintf("%p",call)+" "
+	for _, call := range calls {
+		Data = Data + fmt.Sprintf("%p", call) + " "
 	}
 	return Data
 }
-func  CallsToString(calls []*HackerContractCall) string{
-	if len(calls)== 0{
+func CallsToString(calls []*HackerContractCall) string {
+	if len(calls) == 0 {
 		return ""
 	}
 	var Data string
 	Data = ""
-	for _,call := range calls{
+	for _, call := range calls {
 		tmp := call.ToString()
-		Data = Data + tmp +"\n"
+		Data = Data + tmp + "\n"
 	}
 	return Data
 }
-func (call *HackerContractCall) Sig() string{
-	return fmt.Sprintf("{caller:'%s',callee:'%s',value:'%s',gas:'%s',input:'%s'}",call.caller.Hex(),call.callee.Hex(),call.value.Text(10),
-		call.gas.Text(10),hex.EncodeToString(call.input))
+func (call *HackerContractCall) Sig() string {
+	return fmt.Sprintf("{caller:'%s',callee:'%s',value:'%s',gas:'%s',input:'%s'}", call.caller.Hex(), call.callee.Hex(), call.value.Text(10),
+		call.gas.Text(10), hex.EncodeToString(call.input))
 }
-func (call *HackerContractCall) Hash() []byte{
-	var hash = make([]byte,0,0)
-	for _,nextcall := range call.nextcalls{
-		hash = append(hash,([]byte(nextcall.Sig()))...)
+func (call *HackerContractCall) Hash() []byte {
+	var hash = make([]byte, 0, 0)
+	for _, nextcall := range call.nextcalls {
+		hash = append(hash, ([]byte(nextcall.Sig()))...)
 	}
-	hash = append(hash,([]byte(string(call.OperationStack.len())))...)
-	hash = append(hash,([]byte(call.StateStack.String()))...)
-	return  hash
+	hash = append(hash, ([]byte(string(call.OperationStack.len())))...)
+	hash = append(hash, ([]byte(call.StateStack.String()))...)
+	return hash
 }
-func (call *HackerContractCall) ToString() string{
+func (call *HackerContractCall) ToString() string {
 	var Data string
 
 	Data = fmt.Sprintf(""+
-			"call@%p:<caller:%s,callee:%s," +
-		    "value:%s," +
-			"gas:%s,"+
-			"finalgas:%s"+
-			"\n\tlen(input):%d,input:%s> "+
-			"\n\t\t},",
-			call,
-		    call.caller.Hex(), call.callee.Hex(),
-		    call.value.Text(10),
-			call.gas.Text(10),
-		    call.finalgas.Text(10),
-		    len(call.input), hex.EncodeToString(call.input),
-			)
+		"call@%p:<caller:%s,callee:%s,"+
+		"value:%s,"+
+		"gas:%s,"+
+		"finalgas:%s"+
+		"\n\tlen(input):%d,input:%s> "+
+		"\n\t\t},",
+		call,
+		call.caller.Hex(), call.callee.Hex(),
+		call.value.Text(10),
+		call.gas.Text(10),
+		call.finalgas.Text(10),
+		len(call.input), hex.EncodeToString(call.input),
+	)
 	return Data
 }
 func (call *HackerContractCall) Write(writer io.Writer) {
 	var Data string
 	//Data = fmt.Sprintf("%s",call)
 	Data = fmt.Sprintf(""+
-			"\ncall@%p:" +
-		    "\n<caller:%s," +
-		    "callee:%s," +
-		    "value:%s,gas:%s,finalgas:%s,"+
-			"\n\tlen(input):%d,input:%s> "+
-			"\n\tnextcalls:{"+
-			"\n\t\tlen:%d," +
-			"\n\t\tcalls:[%s]" +
-			"\n\t\tcalls:{%s}" +
-			"\n\t\t},"+
-			"\n\tOperationStack:{\n\t%s}"+
-			"\n\tStateStack:{\n\t%s}>",
-			call,
-		    call.caller.Hex(), call.callee.Hex(),
-		    call.value.Text(10),
-			call.gas.Text(10),
-			call.finalgas.Text(10),
-		    len(call.input),
-		    hex.EncodeToString(call.input),
-			len(call.nextcalls),
-			CallsPointerToString(call.nextcalls),
-		    CallsToString(call.nextcalls),
-			call.OperationStack,
-			call.StateStack)
+		"\ncall@%p:"+
+		"\n<caller:%s,"+
+		"callee:%s,"+
+		"value:%s,gas:%s,finalgas:%s,"+
+		"\n\tlen(input):%d,input:%s> "+
+		"\n\tnextcalls:{"+
+		"\n\t\tlen:%d,"+
+		"\n\t\tcalls:[%s]"+
+		"\n\t\tcalls:{%s}"+
+		"\n\t\t},"+
+		"\n\tOperationStack:{\n\t%s}"+
+		"\n\tStateStack:{\n\t%s}>",
+		call,
+		call.caller.Hex(), call.callee.Hex(),
+		call.value.Text(10),
+		call.gas.Text(10),
+		call.finalgas.Text(10),
+		len(call.input),
+		hex.EncodeToString(call.input),
+		len(call.nextcalls),
+		CallsPointerToString(call.nextcalls),
+		CallsToString(call.nextcalls),
+		call.OperationStack,
+		call.StateStack)
 	writer.Write([]byte(Data))
 }
 func newHackerContractCall(operation string, caller, callee common.Address,
@@ -142,37 +144,37 @@ func newHackerContractCall(operation string, caller, callee common.Address,
 	input := make([]byte, len(_input))
 	copy(input, _input)
 
-	return &HackerContractCall{isInitCall:false,caller: caller, callee: callee, value: value, gas: gas, input: input,
-		OperationStack: _operationStack, StateStack: _stateStack, nextcalls: nextcalls,throwException:false,errOutGas:false,errOutBalance:false}
+	return &HackerContractCall{isInitCall: false, caller: caller, callee: callee, value: value, gas: gas, input: input,
+		OperationStack: _operationStack, StateStack: _stateStack, nextcalls: nextcalls, throwException: false, errOutGas: false, errOutBalance: false}
 }
 
-func (call *HackerContractCall) isAncestor(callA *HackerContractCall) (bool){
-	for _,childcall := range call.nextcalls{
+func (call *HackerContractCall) isAncestor(callA *HackerContractCall) bool {
+	for _, childcall := range call.nextcalls {
 		if childcall == callA {
 			return true
 		}
 	}
-	for _,childcall := range  call.nextcalls{
-		if childcall.isAncestor(callA)==true{
+	for _, childcall := range call.nextcalls {
+		if childcall.isAncestor(callA) == true {
 			return true
 		}
 	}
 	return false
 }
-func (call *HackerContractCall) findFather(index int) *HackerContractCall{
-	for i:= index-1;i>=0;i--{
+func (call *HackerContractCall) findFather(index int) *HackerContractCall {
+	for i := index - 1; i >= 0; i-- {
 		if hacker_calls[i].isAncestor(call) {
 			return hacker_calls[i]
 		}
 	}
 	return nil
 }
-func (call *HackerContractCall) isBrother(callindex int ,callA *HackerContractCall)(bool){
+func (call *HackerContractCall) isBrother(callindex int, callA *HackerContractCall) bool {
 	father := call.findFather(callindex)
-	if father == nil{
+	if father == nil {
 		return false
 	}
-	return  father.isAncestor(callA)
+	return father.isAncestor(callA)
 	//return  !call.isAncestor(callA)&&!callA.isAncestor(call)
 }
 func (call *HackerContractCall) OnCall(_caller ContractRef, _callee common.Address, _value, _gas big.Int,
@@ -181,12 +183,12 @@ func (call *HackerContractCall) OnCall(_caller ContractRef, _callee common.Addre
 	call.StateStack.push(newHackerState(_caller.Address(), _callee))
 	nextcall := newHackerContractCall(opCodeToString[CALL], _caller.Address(), _callee, _value, _gas, _input)
 	call.nextcalls = append(call.nextcalls, nextcall)
-	
+
 	var util HackerUtils
 	hash := util.Hash(nextcall)
-	hacker_call_hashs= append(hacker_call_hashs,hash)
-	hacker_calls = append(hacker_calls,nextcall)
-	
+	hacker_call_hashs = append(hacker_call_hashs, hash)
+	hacker_calls = append(hacker_calls, nextcall)
+
 	return nextcall
 }
 func (call *HackerContractCall) OnDelegateCall(_caller ContractRef, _callee common.Address, _gas big.Int,
@@ -195,26 +197,26 @@ func (call *HackerContractCall) OnDelegateCall(_caller ContractRef, _callee comm
 	call.StateStack.push(newHackerState(_caller.Address(), _callee))
 	nextcall := newHackerContractCall(opCodeToString[DELEGATECALL], _caller.Address(), _callee, *new(big.Int).SetUint64(0), _gas, _input)
 	call.nextcalls = append(call.nextcalls, nextcall)
-	
+
 	var util HackerUtils
 	hash := util.Hash(nextcall)
-	hacker_call_hashs= append(hacker_call_hashs,hash)
-	hacker_calls = append(hacker_calls,nextcall)
-	
+	hacker_call_hashs = append(hacker_call_hashs, hash)
+	hacker_calls = append(hacker_calls, nextcall)
+
 	return nextcall
 }
-func (call *HackerContractCall) OnCallCode(_caller ContractRef, _callee common.Address,  _value,_gas big.Int,
+func (call *HackerContractCall) OnCallCode(_caller ContractRef, _callee common.Address, _value, _gas big.Int,
 	_input []byte) *HackerContractCall {
 	call.OperationStack.push(opCodeToString[CALLCODE])
 	call.StateStack.push(newHackerState(_caller.Address(), _callee))
 	nextcall := newHackerContractCall(opCodeToString[CALLCODE], _caller.Address(), _callee, _value, _gas, _input)
 	call.nextcalls = append(call.nextcalls, nextcall)
-	
+
 	var util HackerUtils
 	hash := util.Hash(nextcall)
-	hacker_call_hashs= append(hacker_call_hashs,hash)
-	hacker_calls = append(hacker_calls,nextcall)
-	
+	hacker_call_hashs = append(hacker_call_hashs, hash)
+	hacker_calls = append(hacker_calls, nextcall)
+
 	return nextcall
 }
 func (call *HackerContractCall) OnCloseCall(finalgas big.Int) {
@@ -222,8 +224,8 @@ func (call *HackerContractCall) OnCloseCall(finalgas big.Int) {
 	//fmt.Println("CloseCall..")
 	call.OperationStack.push(opCodeToString[RETURN])
 	call.StateStack.push(newHackerState(call.caller, call.callee))
-	fmt.Printf("\ncall@%pClosed",call)
-	
+	fmt.Printf("\ncall@%pClosed", call)
+
 	//call.Write(hacker_writer)
 }
 func (call *HackerContractCall) OnBlockHash() {
@@ -278,6 +280,7 @@ func (call *HackerContractCall) OnCalldataLoad() {
 	call.OperationStack.push(opCodeToString[CALLDATALOAD])
 	call.StateStack.push(newHackerState(call.caller, call.callee))
 }
+
 //Memory,Storage operation
 func (call *HackerContractCall) OnMload() {
 	call.OperationStack.push(opCodeToString[MLOAD])
@@ -295,6 +298,7 @@ func (call *HackerContractCall) OnSstore() {
 	call.OperationStack.push(opCodeToString[SSTORE])
 	call.StateStack.push(newHackerState(call.caller, call.callee))
 }
+
 //Jump statement, Jump to existing function position, or Jump to the invalid to invoke a error throw.
 func (call *HackerContractCall) OnJumpi() {
 	call.OperationStack.push(opCodeToString[JUMPI])
@@ -317,6 +321,7 @@ func (call *HackerContractCall) OnReturn() {
 	call.OperationStack.push(opCodeToString[RETURN])
 	call.StateStack.push(newHackerState(call.caller, call.callee))
 }
+
 type HackerContractCallStack struct {
 	data []*HackerContractCall
 }
@@ -391,17 +396,18 @@ func hacker_init(evm *EVM, contract *Contract, input []byte) {
 	if hacker_env == nil || hacker_call_stack == nil {
 		hacker_env = evm
 		hacker_call_stack = newHackerContractCallStack()
-		hacker_call_hashs = make([]common.Hash,0,0)
-		hacker_calls = make([]*HackerContractCall,0,0)
+		hacker_call_hashs = make([]common.Hash, 0, 0)
+		hacker_calls = make([]*HackerContractCall, 0, 0)
 		initCall := newHackerContractCall("STARTRECORD", contract.Caller(), contract.Address(), *contract.Value(), *new(big.Int).SetUint64(contract.Gas), contract.Input)
 		initCall.isInitCall = true
 		hacker_call_stack.push(initCall)
 	}
 
 }
+
 const (
-    MaxIdleConnections int = 50
-    RequestTimeout     int = 5
+	MaxIdleConnections int = 50
+	RequestTimeout     int = 5
 )
 
 var Client = &http.Client{
@@ -414,7 +420,7 @@ var Client = &http.Client{
 // var Client = http.Client{Transport:&transport}
 func hacker_close() {
 	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
-	    hacker_env = nil
+		hacker_env = nil
 		hacker_call_stack = nil
 		hacker_call_hashs = nil
 		hacker_calls = nil
@@ -428,68 +434,74 @@ func hacker_close() {
 				}
 			}
 		}
-	
+
 	}()
 	if hacker_env != nil || hacker_call_stack != nil {
 		Println("hacker_close...")
 
-		for ;hacker_call_stack.len()>0;{
-			call:= hacker_call_stack.pop()
+		for hacker_call_stack.len() > 0 {
+			call := hacker_call_stack.pop()
 			//contract = call.callee
 			call.OnCloseCall(*new(big.Int).SetUint64(0))
 		}
-		//The default Agent Contract's Address:"0xe930e50b62af818dbc955f345f9a3a3108f7a70d" 
+		//The default Agent Contract's Address:"0xe930e50b62af818dbc955f345f9a3a3108f7a70d"
 		//the contract could help us to exploit the underlying bugs such as reentrancy, or exception disorder check bug.
-		if strings.EqualFold(strings.TrimSpace(strings.ToLower(hacker_calls[0].callee.Hex())),strings.TrimSpace("0xe930e50b62af818dbc955f345f9a3a3108f7a70d")){
-		    var root int
-			for root = 1;root<len(hacker_calls);root++{
-				if IsAccountAddress(hacker_calls[root].callee){
+		if strings.EqualFold(strings.TrimSpace(strings.ToLower(hacker_calls[0].callee.Hex())), strings.TrimSpace("0xe930e50b62af818dbc955f345f9a3a3108f7a70d")) {
+			var root int
+			for root = 1; root < len(hacker_calls); root++ {
+				if IsAccountAddress(hacker_calls[root].callee) {
 					break
 				}
 			}
-		   hacker_call_hashs  = hacker_call_hashs[root:]
-		   hacker_calls = hacker_calls[root:]
+			hacker_call_hashs = hacker_call_hashs[root:]
+			hacker_calls = hacker_calls[root:]
 		}
-		//Set check oracles 
+		//Set check oracles
 		//with hacker_call_hashs,and hacker_calls as input,different test oracles are checked
 		//in different way separetely.
-		oracles :=make([]Oracle,0,0)
-		oracles = append(oracles,NewHackerReentrancy())
-		oracles = append(oracles,NewHackerCallEtherTransferFailed())
-		oracles = append(oracles,NewHackerDelegateCallInfo())
-		oracles = append(oracles,NewHackerExceptionDisorder())
-        oracles = append(oracles,NewHackerGaslessSend())
-        oracles = append(oracles,NewHackerCallOpInfo())
-        oracles = append(oracles,NewHackerSendOpInfo())
-        oracles = append(oracles,NewHackerCallExecption())
-        oracles = append(oracles,NewHackerRepeatedCall())
-        oracles = append(oracles,NewHackerEtherTransfer())
-        oracles = append(oracles,NewHackerStorageChanged())
-        oracles = append(oracles,NewHackerUnknowCall())
-        oracles = append(oracles,NewHackerTimestampOp())
-        oracles = append(oracles,NewHackerRootCallFailed())
-        oracles = append(oracles,NewHackerNumberOp())
-        oracles = append(oracles,NewHackerBlockHashOp())
-        oracles = append(oracles,NewHackerBalanceGtZero())
-        features := make([]string,0,0)
- 		for _,oracle := range  oracles{
-			oracle.InitOracle(hacker_call_hashs,hacker_calls)
-			if true == oracle.TestOracle(){
-				features = append(features,oracle.String())
+		oracles := make([]Oracle, 0, 0)
+		oracles = append(oracles, NewHackerReentrancy())
+		oracles = append(oracles, NewHackerCallEtherTransferFailed())
+		oracles = append(oracles, NewHackerDelegateCallInfo())
+		oracles = append(oracles, NewHackerExceptionDisorder())
+		oracles = append(oracles, NewHackerGaslessSend())
+		oracles = append(oracles, NewHackerCallOpInfo())
+		oracles = append(oracles, NewHackerSendOpInfo())
+		oracles = append(oracles, NewHackerCallExecption())
+		oracles = append(oracles, NewHackerRepeatedCall())
+		oracles = append(oracles, NewHackerEtherTransfer())
+		oracles = append(oracles, NewHackerStorageChanged())
+		oracles = append(oracles, NewHackerUnknowCall())
+		oracles = append(oracles, NewHackerTimestampOp())
+		oracles = append(oracles, NewHackerRootCallFailed())
+		oracles = append(oracles, NewHackerNumberOp())
+		oracles = append(oracles, NewHackerBlockHashOp())
+		oracles = append(oracles, NewHackerBalanceGtZero())
+		features := make([]string, 0, 0)
+		for _, oracle := range oracles {
+			oracle.InitOracle(hacker_call_hashs, hacker_calls)
+			if true == oracle.TestOracle() {
+				features = append(features, oracle.String())
 			}
 		}
-		
+
 		// Send the oracle and profile reports from one transaction or one contract call more precisely.
 		// to FuzzerReporter outside, whose listening port is on "http://localhost:8888/hack"
-		features_str,_:= json.Marshal(features)
-		values := url.Values{"oracles":{string(features_str)},"profile":{GetReportor().Profile(hacker_call_hashs,hacker_calls)}}
-		url := "http://localhost:8888/hack?"+values.Encode()
-		if req, err := http.NewRequest("GET", url,nil);err!= nil {
-       	 	log.Println("Error Occured. %+v", err)
-		}else{
-			if response,err := Client.Do(req);err!=nil{
+		features_str, _ := json.Marshal(features)
+		values := url.Values{"oracles": {string(features_str)}, "profile": {GetReportor().Profile(hacker_call_hashs, hacker_calls)}}
+		fuzzerHost := os.Getenv("FUZZER_HOST")
+		if fuzzerHost == "" {
+			fuzzerHost = "localhost"
+		}
+		url := fmt.Sprintf("http://%s:8888/hack?%s", fuzzerHost, values.Encode())
+		log.Printf("Calling %s\n", url)
+
+		if req, err := http.NewRequest("GET", url, nil); err != nil {
+			log.Println("Error Occured. %+v", err)
+		} else {
+			if response, err := Client.Do(req); err != nil {
 				log.Println("Error sending request to API endpoint. %+v", err)
-			}else{
+			} else {
 				defer response.Body.Close()
 			}
 		}

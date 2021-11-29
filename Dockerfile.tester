@@ -1,0 +1,15 @@
+FROM node:9.11.1-alpine
+
+RUN mkdir -p /tester 
+
+WORKDIR /tester
+
+RUN yarn global add babel-cli \
+    && ln -s /usr/bin/babel-node /usr/bin/bnode
+
+ADD contract_tester contract_tester
+ADD tester_run.sh tester_run.sh
+
+EXPOSE 8088
+
+CMD ["/bin/sh","tester_run.sh"]

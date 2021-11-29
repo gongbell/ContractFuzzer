@@ -1,0 +1,32 @@
+FROM golang:1.10.2-alpine3.7
+
+LABEL maintainer="LIUYE, BUAA <liuye5@live.com>"
+
+RUN mkdir -p /ContractFuzzer 
+
+WORKDIR /ContractFuzzer
+
+RUN apk add --update git go make gcc musl-dev linux-headers
+
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
+
+ADD examples examples
+ADD contract_fuzzer contract_fuzzer
+ADD fuzzer_run.sh fuzzer_run.sh
+ADD benchmark.py benchmark.py
+ADD benchmark.json benchmark.json
+
+RUN (cd contract_fuzzer \
+    && source ./gopath.sh \
+    && cd ./src/ContractFuzzer/contractfuzzer \
+    && go build -o contract_fuzzer) \
+  && cp contract_fuzzer/src/ContractFuzzer/contractfuzzer/contract_fuzzer /usr/local/bin \
+  && rm -rf ./go-ethereum && rm -rf ./contract_fuzzer
+
+EXPOSE 8888
+
+CMD ["/usr/bin/python", "benchmark.py"]
+

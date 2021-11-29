@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  geth:
+    container_name: geth
+    image: contractfuzzer/geth
+    build: 
+      context: .
+      dockerfile: Dockerfile.geth
+    ports:
+      - "8545:8545"
+    environment:
+      - FUZZER_HOST=fuzzer
+  tester:
+    container_name: tester
+    image: contractfuzzer/tester
+    build: 
+      context: .
+      dockerfile: Dockerfile.tester
+    ports:
+      - "8088:8088"
+    depends_on:
+      - "geth"
+    environment:
+      - GETH_HOST=geth
+  fuzzer:
+    container_name: fuzzer
+    image: contractfuzzer/fuzzer
+    build: 
+      context: .
+      dockerfile: Dockerfile.fuzzer
+    ports:
+      - "8888:8888"
+    depends_on:
+      - "tester"
+    environment:
+      - TESTER_HOST=tester
+    volumes:
+      - ".:/output"
