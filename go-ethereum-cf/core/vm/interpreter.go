@@ -103,6 +103,10 @@ func (in *Interpreter) Run(snapshot int, contract *Contract, input []byte) (ret 
 		return nil, nil
 	}
 
+	// HACKER: initialize instructions registry
+	registry := GetRegistryInstance(contract.CodeAddr.Hex(), common.ToHex(contract.Input))
+	defer registry.SendRegistriesToFuzzer()
+
 	codehash := contract.CodeHash // codehash is used when doing jump dest caching
 	if codehash == (common.Hash{}) {
 		codehash = crypto.Keccak256Hash(contract.Code)
@@ -181,8 +185,12 @@ func (in *Interpreter) Run(snapshot int, contract *Contract, input []byte) (ret 
 		if in.cfg.Debug {
 			in.cfg.Tracer.CaptureState(in.evm, pc, op, contract.Gas, cost, mem, stack, contract, in.evm.depth, err)
 		}
+
+		// HACKER: Register executed instruction
+		registry.Register(pc)
+
 		//Hacker_record: wrap evm opcode operation, and record information that we care in our test.
-		res,err := Hacker_record(op,(opFunc)(operation.execute),&pc, in.evm, contract, mem, stack)
+		res, err := Hacker_record(op, (opFunc)(operation.execute), &pc, in.evm, contract, mem, stack)
 		// execute the operation
 		//res, err := operation.execute(&pc, in.evm, contract, mem, stack)
 		// verifyPool is a build flag. Pool verification makes sure the integrity
