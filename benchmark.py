@@ -5,6 +5,7 @@ import shutil
 import logging
 import time
 
+
 def delete_folder_content(folder):
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
@@ -16,9 +17,12 @@ def delete_folder_content(folder):
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
+
 def clean_results_folder(vbl):
-    delete_folder_content(f"{os.getcwd()}/examples/{vbl}/fuzzer/reporter")
-    os.mkdir(f"{os.getcwd()}/examples/{vbl}/fuzzer/reporter/bug")
+    folder = f"{os.getcwd()}/examples/{vbl}/fuzzer/reporter"
+    if os.path.isdir(folder):
+        delete_folder_content(f"{os.getcwd()}/examples/{vbl}/fuzzer/reporter")
+        os.mkdir(f"{os.getcwd()}/examples/{vbl}/fuzzer/reporter/bug")
 
 
 def get_explored_vulnerabilities(vbl, results_file):
@@ -31,6 +35,7 @@ def get_explored_vulnerabilities(vbl, results_file):
     f.close()
     return list(temp)
 
+
 def get_tested_contracts(vbl):
     contracts = []
     f = open(f"{os.getcwd()}/examples/{vbl}/fuzzer/config/contracts.list", "r")
@@ -41,12 +46,14 @@ def get_tested_contracts(vbl):
     f.close()
     return list(temp)
 
+
 def compute_percentage(explored_contracts, known_contracts):
     total = len(known_contracts)
     for c in explored_contracts:
         if c in known_contracts:
             known_contracts.remove(c)
     return (total - len(known_contracts)) / total
+
 
 def get_elapsed_times():
     times = {}
@@ -62,6 +69,7 @@ def get_elapsed_times():
     f.close()
     return times
 
+
 def get_contract_size(vulnerability, contract_name):
     size = -1
     if os.path.isfile(f"{os.getcwd()}/examples/{vulnerability}/verified_contract_bins/{contract_name}.bin"):
@@ -71,6 +79,7 @@ def get_contract_size(vulnerability, contract_name):
     
     return size
 
+
 def get_num_functions(vulnerability, contract_name):
     num = -1
     if os.path.isfile(f"{os.getcwd()}/examples/{vulnerability}/verified_contract_abis/{contract_name}.abi"):
@@ -79,6 +88,7 @@ def get_num_functions(vulnerability, contract_name):
         num = len([f for f in abi if f["type"] == "function"])
         f.close()
     return num
+
 
 def get_execution_result(v, contract_name, explored_contracts, times):
     return {
@@ -90,7 +100,7 @@ def get_execution_result(v, contract_name, explored_contracts, times):
     }
 
 
-def main(reps = 1):
+def main(reps=1):
     logging.info("Initializing benchmark")
 
     logging.info("Reading \"benchmark.json\" file")
@@ -114,7 +124,7 @@ def main(reps = 1):
                 print(f'An error occurred while running {key} vulnerability')
                 continue
 
-            logging.info(f"Get vulnerable contracts")
+            logging.info("Get vulnerable contracts")
             tested_contracts = get_tested_contracts(key)
             explored_contracts = get_explored_vulnerabilities(key, bugs[key])
             perc = compute_percentage(explored_contracts, tested_contracts.copy())
@@ -135,6 +145,7 @@ def main(reps = 1):
     f.close()
 
     logging.info("Finishing benchmark")
+
 
 if __name__ == "__main__":
     main(5)
